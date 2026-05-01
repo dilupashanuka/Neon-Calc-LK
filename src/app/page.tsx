@@ -109,7 +109,7 @@ export default function HomePage() {
               </div>
               
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] mb-8 tracking-tighter uppercase">
-                {settings.hero_line1 || 'PURE'} <br/> <span className="text-primary">{settings.hero_line2 || 'SUPREMACY'}</span>
+                {settings.hero_line1 || 'Neon Calc'} <br/> <span className="text-primary">{settings.hero_line2 || 'LK'}</span>
               </h1>
               
               <p className="text-text-dim text-lg md:text-xl mb-10 max-w-xl leading-relaxed font-bold">
