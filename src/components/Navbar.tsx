@@ -83,7 +83,7 @@ export default function Navbar() {
                   <span className="text-primary ml-2">{settings.brand_name.split(' ').at(-1)}</span>
                 </>
               ) : (
-                <>NEON<span className="text-primary">CALC</span></>
+                <>Neon Calc <span className="text-primary ml-1">LK</span></>
               )}
             </div>
           </Link>
@@ -130,7 +130,7 @@ export default function Navbar() {
             className="fixed inset-0 bg-bg-dark/95 backdrop-blur-2xl z-[2000] flex flex-col p-8"
           >
             <div className="flex justify-between items-center mb-16">
-              <div className="text-white text-2xl font-black">NEON<span className="text-primary">CALC</span></div>
+              <div className="text-white text-2xl font-black">Neon Calc <span className="text-primary ml-1">LK</span></div>
               <button onClick={() => setIsMenuOpen(false)} className="text-white p-2">
                 <X size={32} />
               </button>

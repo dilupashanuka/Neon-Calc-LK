@@ -35,7 +35,7 @@ export default async function Footer() {
                     <span className="text-primary ml-2">{settings.brand_name.split(' ').at(-1)}</span>
                   </>
                 ) : (
-                  <>NEON<span className="text-primary">CALC</span></>
+                <>Neon Calc <span className="text-primary ml-1">LK</span></>
                 )}
               </div>
             </Link>

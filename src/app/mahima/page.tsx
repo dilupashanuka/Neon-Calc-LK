@@ -44,7 +44,7 @@ export default function AdminPage() {
   const [newFbPost, setNewFbPost] = useState({ post_url: '' });
   const [newReview, setNewReview] = useState({ customer_name: '', review_text: '', rating: 5 });
   const [newHeroSlide, setNewHeroSlide] = useState({ image_url: '', title: '', subtitle: '' });
-  const [heroFile, setHeroFile] = useState<File | null>(null);
+  const [heroFiles, setHeroFiles] = useState<File[]>([]);
 
   const supabase = createClient();
   const router = useRouter();
@@ -99,40 +99,44 @@ export default function AdminPage() {
 
   const handleAddHeroSlide = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!heroFile && !newHeroSlide.image_url) return;
+    if (heroFiles.length === 0 && !newHeroSlide.image_url) return;
     setIsSubmitting(true);
 
-    let finalUrl = newHeroSlide.image_url;
+    // If there are files, upload them in bulk
+    if (heroFiles.length > 0) {
+      for (const file of heroFiles) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const { data, error: uploadError } = await supabase.storage
+          .from('products')
+          .upload(`hero/${fileName}`, file);
 
-    if (heroFile) {
-      const fileExt = heroFile.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const { data, error: uploadError } = await supabase.storage
-        .from('products')
-        .upload(`hero/${fileName}`, heroFile);
-
-      if (uploadError) {
-        alert('Upload failed: ' + uploadError.message);
-        setIsSubmitting(false);
-        return;
+        if (uploadError) {
+          console.error('Upload failed:', uploadError.message);
+          continue; // Skip failed uploads but continue with others
+        }
+        
+        const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(`hero/${fileName}`);
+        
+        // Insert into DB
+        await supabase.from('hero_slides').insert([{
+          title: newHeroSlide.title || file.name.split('.')[0], // Use filename as fallback title
+          subtitle: newHeroSlide.subtitle,
+          image_url: publicUrl,
+          display_order: heroSlides.length
+        }]);
       }
-      const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(`hero/${fileName}`);
-      finalUrl = publicUrl;
+    } else if (newHeroSlide.image_url) {
+      // Single URL case
+      await supabase.from('hero_slides').insert([{
+        ...newHeroSlide,
+        display_order: heroSlides.length
+      }]);
     }
 
-    const { error } = await supabase.from('hero_slides').insert([{
-      ...newHeroSlide,
-      image_url: finalUrl,
-      display_order: heroSlides.length
-    }]);
-
-    if (!error) {
-      setNewHeroSlide({ image_url: '', title: '', subtitle: '' });
-      setHeroFile(null);
-      await fetchData();
-    } else {
-      alert('Error adding slide: ' + error.message);
-    }
+    setNewHeroSlide({ image_url: '', title: '', subtitle: '' });
+    setHeroFiles([]);
+    await fetchData();
     setIsSubmitting(false);
   };
 
@@ -411,7 +415,7 @@ export default function AdminPage() {
               className="fixed inset-y-0 left-0 w-[280px] bg-bg-dark border-r border-white/10 z-[1002] lg:hidden p-8 flex flex-col gap-8 shadow-2xl"
             >
               <div className="flex justify-between items-center mb-4">
-                <div className="text-xl font-black tracking-tighter">NEON <span className="text-primary">ADMIN</span></div>
+                <div className="text-white text-3xl font-black tracking-widest mb-2">Neon Calc <span className="text-primary">LK</span></div>
                 <button onClick={() => setIsSidebarOpen(false)} className="text-text-dim hover:text-white p-2">
                   <Plus className="rotate-45" />
                 </button>
@@ -454,7 +458,7 @@ export default function AdminPage() {
               <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             </Link>
             <div>
-              <h1 className="text-3xl font-black tracking-tighter">MAHIMA <span className="text-primary uppercase">Portal</span></h1>
+              <h1 className="text-3xl font-black tracking-tighter">Neon Calc <span className="text-primary uppercase">LK</span> <span className="text-white">Portal</span></h1>
               <p className="text-text-dim text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                 Secure Administrator Access
@@ -566,7 +570,7 @@ export default function AdminPage() {
                     <div className="space-y-12">
                       <div className="neon-card !p-8">
                         <h2 className="text-2xl font-black mb-8 flex items-center gap-3">
-                          <Plus className="text-primary" /> New Product
+                          <Plus className="text-primary" /> Neon Calc <span className="text-primary">LK</span> New Product
                         </h2>
                         <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                            <div className="space-y-6">
@@ -782,7 +786,7 @@ export default function AdminPage() {
                     <div className="space-y-8">
                        <div className="flex flex-col md:flex-row justify-between items-end gap-4 mb-4">
                           <div>
-                             <h2 className="text-3xl font-black text-white">Contact <span className="text-primary">Inquiries</span></h2>
+                             <div className="text-white text-2xl font-black">Neon Calc <span className="text-primary">LK</span></div>
                              <p className="text-text-dim text-sm font-bold uppercase tracking-widest mt-2">Messages received via contact form</p>
                           </div>
                        </div>
@@ -898,18 +902,19 @@ export default function AdminPage() {
                         <form onSubmit={handleAddHeroSlide} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                           <div className="space-y-6">
                             <div>
-                              <label className="text-xs font-black text-text-dim uppercase tracking-widest mb-3 block">Image Upload</label>
+                              <label className="text-xs font-black text-text-dim uppercase tracking-widest mb-3 block">Image Upload (Bulk Support)</label>
                               <div className="relative group cursor-pointer">
                                 <input 
                                   type="file" 
                                   accept="image/*"
+                                  multiple
                                   className="absolute inset-0 opacity-0 cursor-pointer z-10" 
-                                  onChange={e => e.target.files && setHeroFile(e.target.files[0])} 
+                                  onChange={e => e.target.files && setHeroFiles(Array.from(e.target.files))} 
                                 />
                                 <div className="w-full bg-white/5 border-2 border-dashed border-primary/20 rounded-2xl p-6 text-center group-hover:border-primary/50 group-hover:bg-primary/5 transition-all">
                                   <ImageIcon className="mx-auto mb-2 text-text-dim group-hover:text-primary transition-colors" size={24} />
                                   <p className="text-xs font-bold text-text-dim group-hover:text-white transition-colors">
-                                    {heroFile ? heroFile.name : 'Select Hero Image'}
+                                    {heroFiles.length > 0 ? `${heroFiles.length} Images Selected` : 'Select Hero Images'}
                                   </p>
                                 </div>
                               </div>
@@ -1154,7 +1159,7 @@ export default function AdminPage() {
             >
               <div className="p-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
                 <div>
-                  <h2 className="text-2xl font-black tracking-tighter uppercase">Edit <span className="text-primary">Product</span></h2>
+                  <div className="text-xl font-black tracking-tighter uppercase">Neon Calc <span className="text-primary">LK</span></div>
                   <p className="text-[10px] text-text-dim font-black uppercase tracking-widest">Update specifications and imagery</p>
                 </div>
                 <button onClick={() => setEditingProduct(null)} className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-text-dim hover:text-white transition-all">
