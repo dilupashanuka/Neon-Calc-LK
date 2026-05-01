@@ -19,6 +19,7 @@ export default function AdminPage() {
   const [reviews, setReviews] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
   const [faqs, setFaqs] = useState<any[]>([]);
+  const [heroSlides, setHeroSlides] = useState<any[]>([]);
   const [settings, setSettings] = useState({
     phone: '', whatsapp: '', email: '', fb_link: '',
     warranty_title: '', warranty_intro: '', warranty_period: '',
@@ -42,6 +43,8 @@ export default function AdminPage() {
   const [newCategory, setNewCategory] = useState('');
   const [newFbPost, setNewFbPost] = useState({ post_url: '' });
   const [newReview, setNewReview] = useState({ customer_name: '', review_text: '', rating: 5 });
+  const [newHeroSlide, setNewHeroSlide] = useState({ image_url: '', title: '', subtitle: '' });
+  const [heroFile, setHeroFile] = useState<File | null>(null);
 
   const supabase = createClient();
   const router = useRouter();
@@ -59,6 +62,7 @@ export default function AdminPage() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => fetchData())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'contact_messages' }, () => fetchData())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'faqs' }, () => fetchData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'hero_slides' }, () => fetchData())
       .subscribe();
 
     return () => {
@@ -75,6 +79,7 @@ export default function AdminPage() {
     const { data: rData } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
     const { data: mData } = await supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
     const { data: faqData } = await supabase.from('faqs').select('*').order('display_order', { ascending: true });
+    const { data: hData } = await supabase.from('hero_slides').select('*').order('display_order', { ascending: true });
     
     if (pData) setProducts(pData);
     if (cData) {
@@ -88,7 +93,54 @@ export default function AdminPage() {
     if (rData) setReviews(rData);
     if (mData) setMessages(mData);
     if (faqData) setFaqs(faqData);
+    if (hData) setHeroSlides(hData);
     setLoading(false);
+  };
+
+  const handleAddHeroSlide = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!heroFile && !newHeroSlide.image_url) return;
+    setIsSubmitting(true);
+
+    let finalUrl = newHeroSlide.image_url;
+
+    if (heroFile) {
+      const fileExt = heroFile.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const { data, error: uploadError } = await supabase.storage
+        .from('products')
+        .upload(`hero/${fileName}`, heroFile);
+
+      if (uploadError) {
+        alert('Upload failed: ' + uploadError.message);
+        setIsSubmitting(false);
+        return;
+      }
+      const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(`hero/${fileName}`);
+      finalUrl = publicUrl;
+    }
+
+    const { error } = await supabase.from('hero_slides').insert([{
+      ...newHeroSlide,
+      image_url: finalUrl,
+      display_order: heroSlides.length
+    }]);
+
+    if (!error) {
+      setNewHeroSlide({ image_url: '', title: '', subtitle: '' });
+      setHeroFile(null);
+      await fetchData();
+    } else {
+      alert('Error adding slide: ' + error.message);
+    }
+    setIsSubmitting(false);
+  };
+
+  const handleDeleteHeroSlide = async (id: string) => {
+    if (confirm('Delete this hero slide?')) {
+      await supabase.from('hero_slides').delete().eq('id', id);
+      await fetchData();
+    }
   };
 
   const handleAddCategory = async (e: React.FormEvent) => {
@@ -366,6 +418,7 @@ export default function AdminPage() {
               </div>
               <nav className="flex flex-col gap-2">
                 <NavButton tab="dashboard" icon={LayoutGrid} label="Dashboard" />
+                <NavButton tab="hero" icon={ImageIcon} label="Hero Showcase" />
                 <NavButton tab="products" icon={Package} label="Inventory" />
                 <NavButton tab="categories" icon={LayoutGrid} label="Categories" />
                 <NavButton tab="social" icon={Share2} label="Social Feed" />
@@ -426,6 +479,7 @@ export default function AdminPage() {
           <aside className="hidden lg:flex flex-col gap-2">
             <div className="neon-card !p-3 flex flex-col gap-1">
               <NavButton tab="dashboard" icon={LayoutGrid} label="Dashboard" />
+              <NavButton tab="hero" icon={ImageIcon} label="Hero Showcase" />
               <NavButton tab="products" icon={Package} label="Inventory" />
               <NavButton tab="categories" icon={LayoutGrid} label="Categories" />
               <NavButton tab="social" icon={Share2} label="Social Feed" />
@@ -833,6 +887,77 @@ export default function AdminPage() {
                        </div>
                      </div>
                    )}
+
+                   {/* TAB: HERO SHOWCASE */}
+                  {activeTab === 'hero' && (
+                    <div className="space-y-12">
+                      <div className="neon-card !p-8">
+                        <h2 className="text-2xl font-black mb-8 flex items-center gap-3">
+                          <ImageIcon className="text-primary" /> New Hero Slide
+                        </h2>
+                        <form onSubmit={handleAddHeroSlide} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="space-y-6">
+                            <div>
+                              <label className="text-xs font-black text-text-dim uppercase tracking-widest mb-3 block">Image Upload</label>
+                              <div className="relative group cursor-pointer">
+                                <input 
+                                  type="file" 
+                                  accept="image/*"
+                                  className="absolute inset-0 opacity-0 cursor-pointer z-10" 
+                                  onChange={e => e.target.files && setHeroFile(e.target.files[0])} 
+                                />
+                                <div className="w-full bg-white/5 border-2 border-dashed border-primary/20 rounded-2xl p-6 text-center group-hover:border-primary/50 group-hover:bg-primary/5 transition-all">
+                                  <ImageIcon className="mx-auto mb-2 text-text-dim group-hover:text-primary transition-colors" size={24} />
+                                  <p className="text-xs font-bold text-text-dim group-hover:text-white transition-colors">
+                                    {heroFile ? heroFile.name : 'Select Hero Image'}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-xs font-black text-text-dim uppercase tracking-widest mb-3 block">Or Image URL</label>
+                              <input className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-primary outline-none font-mono text-sm" value={newHeroSlide.image_url} onChange={e => setNewHeroSlide({...newHeroSlide, image_url: e.target.value})} placeholder="https://..." />
+                            </div>
+                          </div>
+                          <div className="space-y-6">
+                            <div>
+                              <label className="text-xs font-black text-text-dim uppercase tracking-widest mb-3 block">Main Title (Optional)</label>
+                              <input className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-primary outline-none" value={newHeroSlide.title} onChange={e => setNewHeroSlide({...newHeroSlide, title: e.target.value})} placeholder="e.g. SUMMER SALE" />
+                            </div>
+                            <div>
+                              <label className="text-xs font-black text-text-dim uppercase tracking-widest mb-3 block">Subtitle (Optional)</label>
+                              <input className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-primary outline-none" value={newHeroSlide.subtitle} onChange={e => setNewHeroSlide({...newHeroSlide, subtitle: e.target.value})} placeholder="e.g. Up to 50% Off" />
+                            </div>
+                            <button disabled={isSubmitting} type="submit" className="w-full bg-primary text-white py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-3">
+                              {isSubmitting ? <Loader2 className="animate-spin" /> : <><Plus /> Add Hero Slide</>}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+
+                      <div className="neon-card !p-8">
+                        <h2 className="text-2xl font-black mb-8">Active Slides</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {heroSlides.map((slide, idx) => (
+                            <div key={slide.id} className="group relative bg-white/5 rounded-3xl overflow-hidden border border-white/10">
+                              <img src={slide.image_url} className="w-full aspect-video object-cover" />
+                              <div className="p-6">
+                                <div className="text-primary text-[10px] font-black uppercase tracking-widest mb-1">Slide #{idx + 1}</div>
+                                <div className="font-bold text-white mb-1 truncate">{slide.title || 'No Title'}</div>
+                                <div className="text-xs text-text-dim truncate">{slide.subtitle || 'No Subtitle'}</div>
+                              </div>
+                              <button onClick={() => handleDeleteHeroSlide(slide.id)} className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-red-500/20 text-red-500 backdrop-blur-xl border border-red-500/20 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all opacity-0 group-hover:opacity-100">
+                                <Trash2 size={18} />
+                              </button>
+                            </div>
+                          ))}
+                          {heroSlides.length === 0 && (
+                            <div className="col-span-full py-20 text-center text-text-dim italic">No hero slides found. Add one above!</div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                    {/* TAB: SITE CONTENT */}
                    {activeTab === 'content' && (

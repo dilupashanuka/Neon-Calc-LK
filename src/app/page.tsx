@@ -8,11 +8,10 @@ import ProductCard from '@/components/ProductCard';
 
 export default function HomePage() {
   const [products, setProducts] = useState<any[]>([]);
-  const [heroProducts, setHeroProducts] = useState<any[]>([]);
+  const [heroSlides, setHeroSlides] = useState<any[]>([]);
   const [fbPosts, setFbPosts] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
   const [heroIdx, setHeroIdx] = useState(0);
-  const [heroImageIdx, setHeroImageIdx] = useState(0);
   const [whatsappNumber, setWhatsappNumber] = useState('94765646270');
   const [settings, setSettings] = useState<any>({});
 
@@ -23,6 +22,7 @@ export default function HomePage() {
       const { data: fData } = await supabase.from('fb_posts').select('*').limit(3).order('created_at', { ascending: false });
       const { data: sData } = await supabase.from('site_settings').select('*').single();
       const { data: rData } = await supabase.from('reviews').select('*').limit(6).order('created_at', { ascending: false });
+      const { data: hData } = await supabase.from('hero_slides').select('*').order('display_order', { ascending: true });
       
       if (sData) {
         setSettings(sData);
@@ -31,18 +31,27 @@ export default function HomePage() {
       
       if (pData) {
         setProducts(pData.slice(0, 6));
-        
-        // Robust Hero Logic:
-        // 1. Find Premium/Featured
-        // 2. If none, take any top 3
+      }
+
+      if (hData && hData.length > 0) {
+        setHeroSlides(hData);
+      } else if (pData) {
+        // Fallback to premium products if no custom slides
         const premium = pData.filter(p => 
           p.category?.toLowerCase().includes('premium') || 
           p.category?.toLowerCase().includes('featured')
         );
-        
         const heroList = premium.length > 0 ? premium : pData.slice(0, 3);
-        setHeroProducts(heroList);
+        // Map products to slide format
+        setHeroSlides(heroList.map(p => ({
+          image_url: p.image_url,
+          title: p.name,
+          subtitle: `LKR ${p.price}`,
+          button_text: 'Shop Now',
+          button_link: '/products'
+        })));
       }
+
       if (fData) setFbPosts(fData);
       if (rData) setReviews(rData);
     };
@@ -57,6 +66,7 @@ export default function HomePage() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'fb_posts' }, () => fetchData())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => fetchData())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => fetchData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'hero_slides' }, () => fetchData())
       .subscribe();
 
     return () => {
@@ -64,40 +74,19 @@ export default function HomePage() {
     };
   }, []);
 
-  // Hero Carousel Logic (changes product every 8s, changes product image every 3s)
+  // Hero Carousel Logic
   useEffect(() => {
-    if (heroProducts.length === 0) return;
+    if (heroSlides.length <= 1) return;
     
-    const currentProduct = heroProducts[heroIdx];
-    const images = currentProduct.image_urls && currentProduct.image_urls.length > 0 
-      ? currentProduct.image_urls 
-      : [currentProduct.image_url];
+    const interval = setInterval(() => {
+      setHeroIdx(prev => (prev + 1) % heroSlides.length);
+    }, 6000);
 
-    // Sub-carousel for images within a product
-    const imgInterval = setInterval(() => {
-      setHeroImageIdx(prev => (prev + 1) % images.length);
-    }, 3000);
+    return () => clearInterval(interval);
+  }, [heroSlides]);
 
-    // Main carousel for switching products
-    const productInterval = setInterval(() => {
-      setHeroIdx(prev => (prev + 1) % heroProducts.length);
-      setHeroImageIdx(0); // Reset image index when product changes
-    }, 9000);
-
-    return () => {
-      clearInterval(imgInterval);
-      clearInterval(productInterval);
-    };
-  }, [heroProducts, heroIdx]);
-
-  const nextHero = () => {
-    setHeroIdx(prev => (prev + 1) % heroProducts.length);
-    setHeroImageIdx(0);
-  };
-  const prevHero = () => {
-    setHeroIdx(prev => (prev - 1 + heroProducts.length) % heroProducts.length);
-    setHeroImageIdx(0);
-  };
+  const nextHero = () => setHeroIdx(prev => (prev + 1) % heroSlides.length);
+  const prevHero = () => setHeroIdx(prev => (prev - 1 + heroSlides.length) % heroSlides.length);
 
   return (
     <div className="min-h-screen bg-bg-dark text-white">
@@ -146,9 +135,9 @@ export default function HomePage() {
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }} className="relative max-w-2xl mx-auto lg:mr-0">
               <div className="neon-card !p-0 aspect-square overflow-hidden group shadow-[0_0_100px_rgba(var(--primary-rgb),0.15)] relative">
                 <AnimatePresence mode="wait">
-                  {heroProducts.length > 0 ? (
+                  {heroSlides.length > 0 ? (
                     <motion.div
-                      key={heroIdx + '-' + heroImageIdx}
+                      key={heroIdx}
                       initial={{ opacity: 0, scale: 1.1 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
@@ -156,7 +145,7 @@ export default function HomePage() {
                       className="absolute inset-0"
                     >
                       <img 
-                        src={(heroProducts[heroIdx].image_urls && heroProducts[heroIdx].image_urls[heroImageIdx]) || heroProducts[heroIdx].image_url} 
+                        src={heroSlides[heroIdx].image_url} 
                         alt="Featured" 
                         className="w-full h-full object-cover" 
                       />
@@ -164,15 +153,14 @@ export default function HomePage() {
                       {/* Gradient Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
                       
-                      {/* Product Info Overlay */}
+                      {/* Slide Info Overlay */}
                       <div className="absolute bottom-0 left-0 right-0 p-10 transform group-hover:translate-y-[-10px] transition-transform duration-500">
                         <div className="text-primary text-xs font-black uppercase tracking-[0.3em] mb-3">Premium Highlight</div>
-                        <h3 className="text-4xl font-black text-white mb-2">{heroProducts[heroIdx].name}</h3>
+                        <h3 className="text-4xl font-black text-white mb-2">{heroSlides[heroIdx].title}</h3>
                         <div className="flex justify-between items-end">
-                          <div className="text-2xl font-black text-white/90">LKR {heroProducts[heroIdx].price}</div>
+                          <div className="text-2xl font-black text-white/90">{heroSlides[heroIdx].subtitle}</div>
                           <Link 
-                            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi Neon Calc, I want to buy ${heroProducts[heroIdx].name} for LKR ${heroProducts[heroIdx].price}.`)}`} 
-                            target="_blank" 
+                            href={heroSlides[heroIdx].button_link || '/products'} 
                             className="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-primary/30"
                           >
                             <ShoppingBag size={28} />
@@ -197,7 +185,7 @@ export default function HomePage() {
                 </AnimatePresence>
 
                 {/* Carousel Controls */}
-                {heroProducts.length > 1 && (
+                {heroSlides.length > 1 && (
                   <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-6 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
                     <button onClick={prevHero} className="w-12 h-12 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white pointer-events-auto hover:bg-primary transition-all"><ChevronLeft size={24}/></button>
                     <button onClick={nextHero} className="w-12 h-12 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white pointer-events-auto hover:bg-primary transition-all"><ChevronRight size={24}/></button>
@@ -206,7 +194,7 @@ export default function HomePage() {
 
                 {/* Progress Indicators */}
                 <div className="absolute top-10 right-10 z-20 flex flex-col gap-2">
-                  {heroProducts.map((_, i) => (
+                  {heroSlides.map((_, i) => (
                     <div 
                       key={i} 
                       className={`w-1 transition-all duration-500 rounded-full ${
