@@ -29,14 +29,7 @@ export default async function Footer() {
             <Link href="/" className="flex items-center gap-3 mb-6 no-underline inline-block group">
               <img src="/logo.png" alt="Neon Calc" className="w-10 h-10 rounded-full object-cover border border-white/10 group-hover:border-primary/50 transition-all" />
               <div className="text-white text-2xl font-black tracking-tighter uppercase">
-                {settings?.brand_name ? (
-                  <>
-                    {settings.brand_name.split(' ').slice(0, -1).join(' ')}
-                    <span className="text-primary ml-2">{settings.brand_name.split(' ').at(-1)}</span>
-                  </>
-                ) : (
                 <>Neon Calc <span className="text-primary ml-1">LK</span></>
-                )}
               </div>
             </Link>
             <p className="text-text-dim text-sm leading-relaxed mb-8">

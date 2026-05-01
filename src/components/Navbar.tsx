@@ -77,14 +77,7 @@ export default function Navbar() {
               <img src="/logo.png" alt="Neon Calc" className="h-10 w-10 rounded-full object-cover relative z-10 border border-white/10" />
             </div>
             <div className="text-white text-2xl font-black tracking-tighter uppercase">
-              {settings?.brand_name ? (
-                <>
-                  {settings.brand_name.split(' ').slice(0, -1).join(' ')}
-                  <span className="text-primary ml-2">{settings.brand_name.split(' ').at(-1)}</span>
-                </>
-              ) : (
                 <>Neon Calc <span className="text-primary ml-1">LK</span></>
-              )}
             </div>
           </Link>
 
