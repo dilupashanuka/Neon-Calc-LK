@@ -99,45 +99,59 @@ export default function AdminPage() {
 
   const handleAddHeroSlide = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (heroFiles.length === 0 && !newHeroSlide.image_url) return;
+    if (heroFiles.length === 0 && !newHeroSlide.image_url) {
+      alert('Please select files or enter an image URL');
+      return;
+    }
     setIsSubmitting(true);
 
-    // If there are files, upload them in bulk
-    if (heroFiles.length > 0) {
-      for (const file of heroFiles) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const { data, error: uploadError } = await supabase.storage
-          .from('products')
-          .upload(`hero/${fileName}`, file);
+    try {
+      // If there are files, upload them in bulk
+      if (heroFiles.length > 0) {
+        let currentCount = heroSlides.length;
+        for (const file of heroFiles) {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+          
+          const { error: uploadError } = await supabase.storage
+            .from('products')
+            .upload(`hero/${fileName}`, file);
 
-        if (uploadError) {
-          console.error('Upload failed:', uploadError.message);
-          continue; // Skip failed uploads but continue with others
+          if (uploadError) {
+            alert(`Upload failed for ${file.name}: ${uploadError.message}`);
+            continue;
+          }
+          
+          const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(`hero/${fileName}`);
+          
+          const { error: insertError } = await supabase.from('hero_slides').insert([{
+            title: newHeroSlide.title || file.name.split('.')[0],
+            subtitle: newHeroSlide.subtitle,
+            image_url: publicUrl,
+            display_order: currentCount++
+          }]);
+
+          if (insertError) {
+            alert(`Database error for ${file.name}: ${insertError.message}`);
+          }
         }
-        
-        const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(`hero/${fileName}`);
-        
-        // Insert into DB
-        await supabase.from('hero_slides').insert([{
-          title: newHeroSlide.title || file.name.split('.')[0], // Use filename as fallback title
-          subtitle: newHeroSlide.subtitle,
-          image_url: publicUrl,
+      } else if (newHeroSlide.image_url) {
+        const { error: insertError } = await supabase.from('hero_slides').insert([{
+          ...newHeroSlide,
           display_order: heroSlides.length
         }]);
+        if (insertError) alert(`Database error: ${insertError.message}`);
       }
-    } else if (newHeroSlide.image_url) {
-      // Single URL case
-      await supabase.from('hero_slides').insert([{
-        ...newHeroSlide,
-        display_order: heroSlides.length
-      }]);
-    }
 
-    setNewHeroSlide({ image_url: '', title: '', subtitle: '' });
-    setHeroFiles([]);
-    await fetchData();
-    setIsSubmitting(false);
+      setNewHeroSlide({ image_url: '', title: '', subtitle: '' });
+      setHeroFiles([]);
+      await fetchData();
+      alert('Hero slides processed successfully!');
+    } catch (err: any) {
+      alert(`Unexpected error: ${err.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleDeleteHeroSlide = async (id: string) => {
