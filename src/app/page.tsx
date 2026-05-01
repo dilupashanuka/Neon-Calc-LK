@@ -123,21 +123,9 @@ export default function HomePage() {
                 <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Premium Electronics Sri Lanka</span>
               </div>
               
-              <h1 className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-5xl md:text-7xl lg:text-[7rem] font-black leading-none mb-12 tracking-tight uppercase animate-text-glow">
-                <span className="flex items-center gap-2">
-                  <span className="relative inline-block text-[1.1em] font-serif italic text-primary leading-none select-none">
-                    {/* 3D Depth Layers */}
-                    <span className="absolute inset-0 text-black/40 translate-x-[4px] translate-y-[4px] blur-[2px]">N</span>
-                    <span className="absolute inset-0 text-primary-dark translate-x-[2px] translate-y-[2px]">N</span>
-                    <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-tr from-primary via-[#ff6b6b] to-white/80 animate-gradient-x drop-shadow-[0_0_15px_rgba(var(--primary-rgb),0.8)]">N</span>
-                  </span>
-                  <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">eon</span>
-                </span>
+              <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black leading-tight mb-12 tracking-[-0.06em] uppercase animate-text-glow">
                 <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
-                  Calc
-                </span>
-                <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
-                  LK
+                  Neon Calc LK
                 </span>
               </h1>
               
