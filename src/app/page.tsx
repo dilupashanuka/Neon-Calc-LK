@@ -123,9 +123,16 @@ export default function HomePage() {
                 <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Premium Electronics Sri Lanka</span>
               </div>
               
-              <h1 className="text-5xl md:text-7xl lg:text-[7rem] font-black leading-tight mb-12 tracking-tighter uppercase animate-text-glow">
+              <h1 className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-5xl md:text-7xl lg:text-[7rem] font-black leading-tight mb-12 tracking-[0.05em] uppercase animate-text-glow">
+                <span className="flex items-center gap-3 text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
+                  <img src="/logo.png" className="h-[0.8em] w-[0.8em] object-contain rounded-2xl shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]" alt="N" />
+                  eon
+                </span>
                 <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
-                  Neon Calc LK
+                  Calc
+                </span>
+                <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
+                  LK
                 </span>
               </h1>
               
