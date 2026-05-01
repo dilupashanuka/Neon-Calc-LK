@@ -123,7 +123,7 @@ export default function HomePage() {
                 <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Premium Electronics Sri Lanka</span>
               </div>
               
-              <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black leading-tight mb-12 tracking-[-0.06em] uppercase animate-text-glow">
+              <h1 className="text-4xl md:text-7xl lg:text-[8.5rem] font-black leading-none mb-12 tracking-tighter uppercase whitespace-nowrap animate-text-glow">
                 <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
                   Neon Calc LK
                 </span>
