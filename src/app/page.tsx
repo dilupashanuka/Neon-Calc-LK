@@ -124,18 +124,13 @@ export default function HomePage() {
               </div>
               
               <h1 className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-5xl md:text-7xl lg:text-[7rem] font-black leading-none mb-12 tracking-tight uppercase animate-text-glow">
-                <span className="flex items-center gap-4">
-                  <div className="relative flex items-center justify-center w-[0.9em] h-[0.9em]">
-                    <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-150 animate-pulse"></div>
-                    {/* Cropped Branding Jewel */}
-                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center border-4 border-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.5)] overflow-hidden relative z-10">
-                      <img 
-                        src="/logo.png" 
-                        className="w-full h-full object-cover scale-[1.8] translate-y-[-5%]" 
-                        alt="N" 
-                      />
-                    </div>
-                  </div>
+                <span className="flex items-center gap-2">
+                  <span className="relative inline-block text-[1.1em] font-serif italic text-primary leading-none select-none">
+                    {/* 3D Depth Layers */}
+                    <span className="absolute inset-0 text-black/40 translate-x-[4px] translate-y-[4px] blur-[2px]">N</span>
+                    <span className="absolute inset-0 text-primary-dark translate-x-[2px] translate-y-[2px]">N</span>
+                    <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-tr from-primary via-[#ff6b6b] to-white/80 animate-gradient-x drop-shadow-[0_0_15px_rgba(var(--primary-rgb),0.8)]">N</span>
+                  </span>
                   <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">eon</span>
                 </span>
                 <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
