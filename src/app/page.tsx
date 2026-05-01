@@ -108,12 +108,12 @@ export default function HomePage() {
                 <span className="text-white text-xs font-black tracking-[0.2em] uppercase">{settings.hero_badge || 'Premium Electronics SL'}</span>
               </div>
               
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] mb-8 tracking-tighter uppercase">
-                Neon Calc <br/> <span className="text-primary">LK</span>
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.9] mb-8 tracking-tighter uppercase italic">
+                ELITE <br/> <span className="text-primary not-italic">ELECTRONICS</span>
               </h1>
               
-              <p className="text-text-dim text-lg md:text-xl mb-10 max-w-xl leading-relaxed font-bold">
-                {settings.hero_tagline || 'Sri Lanka\'s premium destination for authentic electronics and precision instruments.'}
+              <p className="text-text-dim text-lg md:text-xl mb-10 max-w-xl leading-relaxed font-bold border-l-4 border-primary pl-6">
+                {settings.hero_tagline || 'Redefining mathematical precision. Sri Lanka\'s premier destination for authentic electronic instruments.'}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6">
