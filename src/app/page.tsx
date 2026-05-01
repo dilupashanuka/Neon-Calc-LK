@@ -126,11 +126,14 @@ export default function HomePage() {
               <h1 className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-5xl md:text-7xl lg:text-[7rem] font-black leading-none mb-12 tracking-tight uppercase animate-text-glow">
                 <span className="flex items-center gap-4">
                   <div className="relative flex items-center justify-center w-[0.9em] h-[0.9em]">
-                    {/* Outer Glow Ring */}
                     <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-150 animate-pulse"></div>
-                    {/* Branding Jewel Container */}
-                    <div className="w-full h-full rounded-full bg-white p-2 border-4 border-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.5)] overflow-hidden relative z-10">
-                      <img src="/logo.png" className="w-full h-full object-contain" alt="N" />
+                    {/* Cropped Branding Jewel */}
+                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center border-4 border-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.5)] overflow-hidden relative z-10">
+                      <img 
+                        src="/logo.png" 
+                        className="w-full h-full object-cover scale-[1.8] translate-y-[-5%]" 
+                        alt="N" 
+                      />
                     </div>
                   </div>
                   <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">eon</span>
