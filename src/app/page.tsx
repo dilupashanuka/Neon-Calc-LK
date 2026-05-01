@@ -124,9 +124,21 @@ export default function HomePage() {
               </div>
               
               <h1 className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-5xl md:text-7xl lg:text-[7rem] font-black leading-tight mb-12 tracking-[0.05em] uppercase animate-text-glow">
-                <span className="flex items-center gap-3 text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
-                  <img src="/logo.png" className="h-[0.8em] w-[0.8em] object-contain rounded-2xl shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]" alt="N" />
-                  eon
+                <span className="flex items-center gap-4 text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
+                  <span 
+                    className="inline-block w-[1em] h-[1em] bg-primary bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x"
+                    style={{ 
+                      maskImage: 'url(/logo.png)', 
+                      WebkitMaskImage: 'url(/logo.png)',
+                      maskSize: 'contain',
+                      WebkitMaskSize: 'contain',
+                      maskRepeat: 'no-repeat',
+                      WebkitMaskRepeat: 'no-repeat',
+                      maskPosition: 'center',
+                      WebkitMaskPosition: 'center'
+                    }}
+                  />
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">eon</span>
                 </span>
                 <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
                   Calc
