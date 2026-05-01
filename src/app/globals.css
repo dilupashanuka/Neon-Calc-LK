@@ -1,26 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-primary: #ff3131;
+  --color-primary-dark: #cc0000;
+  --color-bg-dark: #050507;
+  --color-bg-card: #0e0e12;
+  --color-text-dim: #94a3b8;
+  --font-outfit: 'Outfit', sans-serif;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --primary: #ff3131;
+    --primary-dark: #cc0000;
+    --primary-glow: rgba(255, 49, 49, 0.5);
+    --bg-dark: #050507;
+    --bg-card: #0e0e12;
+    --text-main: #ffffff;
+    --text-dim: #94a3b8;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+
+  * {
+    font-family: var(--font-outfit);
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+    background-image: 
+      radial-gradient(circle at 0% 0%, rgba(255, 49, 49, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, rgba(255, 49, 49, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Premium Glassmorphism */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  /* Neon Components without @apply to avoid Tailwind v4 strict mode issues */
+  .neon-btn {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 2rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    transition: all 0.5s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    box-shadow: 0 0 0 0 var(--primary-glow);
+  }
+
+  .neon-btn:hover {
+    transform: translateY(-0.25rem) scale(1.05);
+    box-shadow: 0 10px 40px -10px var(--primary-glow);
+  }
+
+  .neon-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 2rem;
+    padding: 2rem;
+    transition: all 0.5s;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .neon-card:hover {
+    border-color: rgba(255, 49, 49, 0.4);
+    transform: translateY(-0.5rem);
+    box-shadow: 0 20px 40px -15px rgba(255, 49, 49, 0.15);
+  }
+}
+
+/* Mesh Background */
+.mesh-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background: #050507;
+}
+
+.mesh-blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  animation: move-blob 20s infinite alternate;
+}
+
+@keyframes move-blob {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(100px, 100px) scale(1.2); }
+}
+
+/* Custom Selection */
+::selection {
+  background: var(--primary);
+  color: white;
 }
