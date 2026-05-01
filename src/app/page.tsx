@@ -98,115 +98,73 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden min-h-screen flex items-center z-10">
-        <div className="container mx-auto px-6 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="container mx-auto px-6 relative z-20">
+          <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
             
-            {/* Left Content */}
-            <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                <span className="text-white text-xs font-black tracking-[0.2em] uppercase">{settings.hero_badge || 'Premium Electronics SL'}</span>
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ duration: 1, ease: "easeOut" }}
+            >
+              <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 mb-10 backdrop-blur-xl">
+                <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Premium Electronics Sri Lanka</span>
               </div>
               
-              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.9] mb-8 tracking-tighter uppercase italic">
-                ELITE <br/> <span className="text-primary not-italic">ELECTRONICS</span>
+              <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black leading-[0.85] mb-12 tracking-tighter uppercase italic">
+                ELITE <br/> 
+                <span className="text-primary not-italic bg-clip-text text-transparent bg-gradient-to-r from-primary via-red-500 to-primary animate-gradient-x">
+                  ELECTRONICS
+                </span>
               </h1>
               
-              <p className="text-text-dim text-lg md:text-xl mb-10 max-w-xl leading-relaxed font-bold border-l-4 border-primary pl-6">
-                {settings.hero_tagline || 'Redefining mathematical precision. Sri Lanka\'s premier destination for authentic electronic instruments.'}
+              <p className="text-text-dim text-lg md:text-2xl mb-14 max-w-3xl mx-auto leading-relaxed font-bold tracking-tight">
+                {settings.hero_tagline || 'Redefining mathematical precision. Sri Lanka\'s premier destination for authentic electronic instruments and elite precision tools.'}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-6">
-                <Link href="/products" className="neon-btn !px-12 !py-5 group no-underline text-white">
-                  Shop Collection <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
+              <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
+                <Link href="/products" className="neon-btn !px-16 !py-6 group no-underline text-white text-sm tracking-[0.2em] shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)]">
+                  EXPLORE COLLECTION <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                 </Link>
-                <Link href="/contact" className="px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-center no-underline flex items-center justify-center">
-                  Support Center
+                <Link href="/contact" className="px-12 py-6 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] text-white bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-center no-underline backdrop-blur-md">
+                  SUPPORT CENTER
                 </Link>
               </div>
 
-              <div className="mt-16 grid grid-cols-2 gap-8 text-xs text-text-dim font-black tracking-widest uppercase">
-                <div className="flex items-center gap-3"><ShieldCheck size={20} className="text-primary"/> 100% Genuine</div>
-                <div className="flex items-center gap-3"><Truck size={20} className="text-primary"/> Island-wide Ship</div>
-              </div>
-            </motion.div>
-
-            {/* Right Content - Premium Catalog Showcase */}
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }} className="relative max-w-2xl mx-auto lg:mr-0">
-              <div className="neon-card !p-0 aspect-square overflow-hidden group shadow-[0_0_100px_rgba(var(--primary-rgb),0.2)] relative bg-black/40">
-                <AnimatePresence mode="wait">
-                  {heroSlides.length > 0 ? (
-                    <motion.div
-                      key={heroSlides[heroIdx]?.id || heroIdx}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="absolute inset-0"
-                    >
-                      <img 
-                        src={heroSlides[heroIdx].image_url} 
-                        alt={heroSlides[heroIdx].title || "Featured"} 
-                        className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" 
-                        loading="eager"
-                      />
-                      
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                      
-                      {/* Slide Info Overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 p-10 transform group-hover:translate-y-[-5px] transition-transform duration-500">
-                        <div className="text-primary text-xs font-black uppercase tracking-[0.3em] mb-3">Premium Highlight</div>
-                        <h3 className="text-3xl md:text-4xl font-black text-white mb-2">{heroSlides[heroIdx].title}</h3>
-                        <div className="flex justify-between items-end">
-                          <div className="text-xl md:text-2xl font-black text-white/90">{heroSlides[heroIdx].subtitle}</div>
-                          <Link 
-                            href={heroSlides[heroIdx].button_link || '/products'} 
-                            className="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-primary/30"
-                          >
-                            <ShoppingBag size={24} />
-                          </Link>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <div className="absolute inset-0">
-                      <img 
-                        src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2101&auto=format&fit=crop" 
-                        className="w-full h-full object-cover opacity-60" 
-                        alt="Neon Showcase"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col items-center justify-center p-12 text-center">
-                        <Zap size={48} className="text-primary mb-4 animate-pulse" />
-                        <h3 className="text-2xl font-black text-white mb-2 tracking-widest uppercase">PREMIUM SHOWCASE</h3>
-                        <p className="text-text-dim text-sm max-w-xs">Elevate your workspace with our elite collection of precision instruments.</p>
-                      </div>
-                    </div>
-                  )}
-                </AnimatePresence>
-
-                {/* Carousel Controls */}
-                {heroSlides.length > 1 && (
-                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-6 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button onClick={prevHero} className="w-12 h-12 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white pointer-events-auto hover:bg-primary transition-all"><ChevronLeft size={24}/></button>
-                    <button onClick={nextHero} className="w-12 h-12 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white pointer-events-auto hover:bg-primary transition-all"><ChevronRight size={24}/></button>
+              <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-12 text-[10px] text-white/40 font-black tracking-[0.3em] uppercase">
+                <div className="flex flex-col items-center gap-4 group">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:text-primary transition-colors border border-white/5">
+                    <ShieldCheck size={24}/>
                   </div>
-                )}
-
-                {/* Progress Indicators */}
-                <div className="absolute top-10 right-10 z-20 flex flex-col gap-2">
-                  {heroSlides.map((_, i) => (
-                    <div 
-                      key={i} 
-                      className={`w-1 transition-all duration-500 rounded-full ${
-                        i === heroIdx ? 'h-8 bg-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]' : 'h-2 bg-white/20'
-                      }`} 
-                    />
-                  ))}
+                  100% Genuine
+                </div>
+                <div className="flex flex-col items-center gap-4 group">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:text-primary transition-colors border border-white/5">
+                    <Truck size={24}/>
+                  </div>
+                  Island-wide Ship
+                </div>
+                <div className="flex flex-col items-center gap-4 group">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:text-primary transition-colors border border-white/5">
+                    <Zap size={24}/>
+                  </div>
+                  Fast Support
+                </div>
+                <div className="flex flex-col items-center gap-4 group">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:text-primary transition-colors border border-white/5">
+                    <Star size={24}/>
+                  </div>
+                  Elite Warranty
                 </div>
               </div>
             </motion.div>
           </div>
+        </div>
+
+        {/* Cinematic Scroll Indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+          <div className="w-[1px] h-20 bg-gradient-to-b from-transparent via-white to-transparent animate-pulse"></div>
+          <span className="text-[10px] font-black tracking-[0.5em] uppercase">Scroll</span>
         </div>
       </section>
 
