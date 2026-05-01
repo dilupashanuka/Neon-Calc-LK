@@ -30,14 +30,14 @@ export default function HomePage() {
       }
       
       if (pData) {
-        setProducts(pData.slice(0, 6)); // Show first 6 in "New Arrivals"
+        setProducts(pData.slice(0, 6));
         
-        // Premium Catalog Logic:
-        // 1. Try to find products in "Premium" or "Featured" category
-        // 2. If not found, use first 3 products
+        // Robust Hero Logic:
+        // 1. Find Premium/Featured
+        // 2. If none, take any top 3
         const premium = pData.filter(p => 
-          p.category?.toLowerCase() === 'premium' || 
-          p.category?.toLowerCase() === 'featured'
+          p.category?.toLowerCase().includes('premium') || 
+          p.category?.toLowerCase().includes('featured')
         );
         
         const heroList = premium.length > 0 ? premium : pData.slice(0, 3);
@@ -181,11 +181,16 @@ export default function HomePage() {
                       </div>
                     </motion.div>
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center flex-col gap-6">
-                      <Zap size={64} className="text-primary animate-pulse" />
-                      <div className="text-center">
-                        <div className="text-white text-3xl font-black tracking-widest mb-2">NEON<span className="text-primary">CALC</span></div>
-                        <div className="text-text-dim text-xs uppercase tracking-widest font-black animate-pulse">Catalog Synchronizing...</div>
+                    <div className="absolute inset-0">
+                      <img 
+                        src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2101&auto=format&fit=crop" 
+                        className="w-full h-full object-cover opacity-60" 
+                        alt="Neon Showcase"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col items-center justify-center p-12 text-center">
+                        <Zap size={48} className="text-primary mb-4 animate-pulse" />
+                        <h3 className="text-2xl font-black text-white mb-2 tracking-widest uppercase">PREMIUM SHOWCASE</h3>
+                        <p className="text-text-dim text-sm max-w-xs">Elevate your workspace with our elite collection of precision instruments.</p>
                       </div>
                     </div>
                   )}
