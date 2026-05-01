@@ -123,10 +123,9 @@ export default function HomePage() {
                 <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Premium Electronics Sri Lanka</span>
               </div>
               
-              <h1 className="text-6xl md:text-8xl lg:text-[11rem] font-black leading-[0.8] mb-12 tracking-tighter uppercase italic animate-text-glow">
-                ELITE <br/> 
-                <span className="text-primary not-italic bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
-                  ELECTRONICS
+              <h1 className="text-5xl md:text-7xl lg:text-[7rem] font-black leading-tight mb-12 tracking-tighter uppercase animate-text-glow">
+                <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
+                  Neon Calc LK
                 </span>
               </h1>
               
