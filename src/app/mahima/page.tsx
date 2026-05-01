@@ -79,7 +79,7 @@ export default function AdminPage() {
     const { data: rData } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
     const { data: mData } = await supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
     const { data: faqData } = await supabase.from('faqs').select('*').order('display_order', { ascending: true });
-    const { data: hData } = await supabase.from('hero_slides').select('*').order('display_order', { ascending: true });
+    const { data: hData } = await supabase.from('hero_slides').select('*').order('order_index', { ascending: true });
     
     if (pData) setProducts(pData);
     if (cData) {
