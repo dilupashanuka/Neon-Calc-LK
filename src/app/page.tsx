@@ -109,11 +109,11 @@ export default function HomePage() {
               </div>
               
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] mb-8 tracking-tighter uppercase">
-                {settings.hero_line1 || 'Neon Calc'} <br/> <span className="text-primary">{settings.hero_line2 || 'LK'}</span>
+                Neon Calc <br/> <span className="text-primary">LK</span>
               </h1>
               
               <p className="text-text-dim text-lg md:text-xl mb-10 max-w-xl leading-relaxed font-bold">
-                {settings.hero_tagline || 'Experience the peak of mathematical precision. Authenticity guaranteed, performance defined.'}
+                {settings.hero_tagline || 'Sri Lanka\'s premium destination for authentic electronics and precision instruments.'}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6">
@@ -132,38 +132,39 @@ export default function HomePage() {
             </motion.div>
 
             {/* Right Content - Premium Catalog Showcase */}
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }} className="relative max-w-2xl mx-auto lg:mr-0">
-              <div className="neon-card !p-0 aspect-square overflow-hidden group shadow-[0_0_100px_rgba(var(--primary-rgb),0.15)] relative">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }} className="relative max-w-2xl mx-auto lg:mr-0">
+              <div className="neon-card !p-0 aspect-square overflow-hidden group shadow-[0_0_100px_rgba(var(--primary-rgb),0.2)] relative bg-black/40">
                 <AnimatePresence mode="wait">
                   {heroSlides.length > 0 ? (
                     <motion.div
-                      key={heroIdx}
-                      initial={{ opacity: 0, scale: 1.1 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.8, ease: "circOut" }}
+                      key={heroSlides[heroIdx]?.id || heroIdx}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
                       className="absolute inset-0"
                     >
                       <img 
                         src={heroSlides[heroIdx].image_url} 
-                        alt="Featured" 
-                        className="w-full h-full object-cover" 
+                        alt={heroSlides[heroIdx].title || "Featured"} 
+                        className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" 
+                        loading="eager"
                       />
                       
                       {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                       
                       {/* Slide Info Overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 p-10 transform group-hover:translate-y-[-10px] transition-transform duration-500">
+                      <div className="absolute bottom-0 left-0 right-0 p-10 transform group-hover:translate-y-[-5px] transition-transform duration-500">
                         <div className="text-primary text-xs font-black uppercase tracking-[0.3em] mb-3">Premium Highlight</div>
-                        <h3 className="text-4xl font-black text-white mb-2">{heroSlides[heroIdx].title}</h3>
+                        <h3 className="text-3xl md:text-4xl font-black text-white mb-2">{heroSlides[heroIdx].title}</h3>
                         <div className="flex justify-between items-end">
-                          <div className="text-2xl font-black text-white/90">{heroSlides[heroIdx].subtitle}</div>
+                          <div className="text-xl md:text-2xl font-black text-white/90">{heroSlides[heroIdx].subtitle}</div>
                           <Link 
                             href={heroSlides[heroIdx].button_link || '/products'} 
-                            className="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-primary/30"
+                            className="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-primary/30"
                           >
-                            <ShoppingBag size={28} />
+                            <ShoppingBag size={24} />
                           </Link>
                         </div>
                       </div>
