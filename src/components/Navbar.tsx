@@ -77,7 +77,8 @@ export default function Navbar() {
               <img src="/logo.png" alt="Neon Calc" className="h-10 w-10 rounded-full object-cover relative z-10 border border-white/10" />
             </div>
             <div className="text-white text-2xl font-black tracking-tighter uppercase">
-                <>Neon Calc <span className="text-primary ml-1">LK</span></>
+              <span className="text-primary">Neon</span>
+              <span className="ml-1 text-white">Calc LK</span>
             </div>
           </Link>
 
@@ -123,7 +124,10 @@ export default function Navbar() {
             className="fixed inset-0 bg-bg-dark/95 backdrop-blur-2xl z-[2000] flex flex-col p-8"
           >
             <div className="flex justify-between items-center mb-16">
-              <div className="text-white text-2xl font-black">Neon Calc <span className="text-primary ml-1">LK</span></div>
+              <div className="text-white text-2xl font-black uppercase">
+                <span className="text-primary">Neon</span>
+                <span className="ml-1 text-white">Calc LK</span>
+              </div>
               <button onClick={() => setIsMenuOpen(false)} className="text-white p-2">
                 <X size={32} />
               </button>

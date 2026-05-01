@@ -29,7 +29,8 @@ export default async function Footer() {
             <Link href="/" className="flex items-center gap-3 mb-6 no-underline inline-block group">
               <img src="/logo.png" alt="Neon Calc" className="w-10 h-10 rounded-full object-cover border border-white/10 group-hover:border-primary/50 transition-all" />
               <div className="text-white text-2xl font-black tracking-tighter uppercase">
-                <>Neon Calc <span className="text-primary ml-1">LK</span></>
+                <span className="text-primary">Neon</span>
+                <span className="ml-1 text-white">Calc LK</span>
               </div>
             </Link>
             <p className="text-text-dim text-sm leading-relaxed mb-8">
