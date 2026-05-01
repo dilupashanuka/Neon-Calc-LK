@@ -22,7 +22,7 @@ export default function HomePage() {
       const { data: fData } = await supabase.from('fb_posts').select('*').limit(3).order('created_at', { ascending: false });
       const { data: sData } = await supabase.from('site_settings').select('*').single();
       const { data: rData } = await supabase.from('reviews').select('*').limit(6).order('created_at', { ascending: false });
-      const { data: hData } = await supabase.from('hero_slides').select('*').order('order_index', { ascending: true });
+      const { data: hData } = await supabase.from('hero_slides').select('*').order('display_order', { ascending: true });
       
       if (sData) {
         setSettings(sData);
