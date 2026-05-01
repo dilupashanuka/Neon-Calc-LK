@@ -97,15 +97,39 @@ export default function HomePage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden min-h-screen flex items-center z-10">
-        {/* Premium Background Effects */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow"></div>
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] pointer-events-none"></div>
+      <section className="relative min-h-screen flex items-center overflow-hidden z-10">
+        {/* Cinematic Background Slider */}
+        <div className="absolute inset-0 z-0">
+          <AnimatePresence mode="wait">
+            {heroSlides.length > 0 ? (
+              <motion.div
+                key={heroIdx}
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 2, ease: "easeOut" }}
+                className="absolute inset-0"
+              >
+                <div className="absolute inset-0 bg-black/60 z-10"></div>
+                <img 
+                  src={heroSlides[heroIdx]?.image_url} 
+                  alt="Premium Electronics" 
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            ) : (
+              <div className="absolute inset-0 bg-bg-dark"></div>
+            )}
+          </AnimatePresence>
+          
+          {/* Subtle Texture Overlay */}
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] z-20 pointer-events-none"></div>
+          
+          {/* Gradient Vignette */}
+          <div className="absolute inset-0 bg-gradient-to-b from-bg-dark/80 via-transparent to-bg-dark z-20"></div>
         </div>
 
-        <div className="container mx-auto px-6 relative z-20">
+        <div className="container mx-auto px-6 relative z-30 pt-20">
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
             
             <motion.div 
@@ -114,11 +138,7 @@ export default function HomePage() {
               transition={{ duration: 1.2, ease: "easeOut" }}
               className="relative"
             >
-              {/* Floating Decorative Elements */}
-              <div className="absolute -top-20 -left-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-float"></div>
-              <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
-
-              <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 mb-10 backdrop-blur-xl animate-float">
+              <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 mb-10 backdrop-blur-xl">
                 <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
                 <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Premium Electronics Sri Lanka</span>
               </div>
@@ -128,7 +148,7 @@ export default function HomePage() {
                 <span className="text-white ml-6 opacity-90">Calc LK</span>
               </h1>
               
-              <p className="text-text-dim text-lg md:text-2xl mb-14 max-w-3xl mx-auto leading-relaxed font-bold tracking-tight">
+              <p className="text-white/80 text-lg md:text-2xl mb-14 max-w-3xl mx-auto leading-relaxed font-bold tracking-tight drop-shadow-2xl">
                 {settings.hero_tagline || 'Experience the peak of mathematical precision. Authenticity guaranteed, performance defined.'}
               </p>
               
@@ -145,7 +165,7 @@ export default function HomePage() {
         </div>
 
         {/* Cinematic Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30 z-30">
           <div className="w-[1px] h-20 bg-gradient-to-b from-transparent via-white to-transparent animate-pulse"></div>
           <span className="text-[10px] font-black tracking-[0.5em] uppercase text-white">Scroll</span>
         </div>
