@@ -123,11 +123,15 @@ export default function HomePage() {
                 <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Premium Electronics Sri Lanka</span>
               </div>
               
-              <h1 className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-5xl md:text-7xl lg:text-[7rem] font-black leading-tight mb-12 tracking-[0.05em] uppercase animate-text-glow">
+              <h1 className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-5xl md:text-7xl lg:text-[7rem] font-black leading-none mb-12 tracking-tight uppercase animate-text-glow">
                 <span className="flex items-center gap-4">
-                  <div className="relative group">
-                    <div className="absolute inset-0 bg-primary/30 blur-2xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                    <img src="/logo.png" className="h-[0.9em] w-[0.9em] object-contain relative z-10 rounded-2xl shadow-[0_0_40px_rgba(var(--primary-rgb),0.3)]" alt="N" />
+                  <div className="relative flex items-center justify-center w-[0.9em] h-[0.9em]">
+                    {/* Outer Glow Ring */}
+                    <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-150 animate-pulse"></div>
+                    {/* Branding Jewel Container */}
+                    <div className="w-full h-full rounded-full bg-white p-2 border-4 border-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.5)] overflow-hidden relative z-10">
+                      <img src="/logo.png" className="w-full h-full object-contain" alt="N" />
+                    </div>
                   </div>
                   <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">eon</span>
                 </span>
