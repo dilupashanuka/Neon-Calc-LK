@@ -98,28 +98,40 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden min-h-screen flex items-center z-10">
+        {/* Premium Background Effects */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] pointer-events-none"></div>
+        </div>
+
         <div className="container mx-auto px-6 relative z-20">
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
             
             <motion.div 
               initial={{ opacity: 0, y: 30 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1, ease: "easeOut" }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="relative"
             >
-              <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 mb-10 backdrop-blur-xl">
+              {/* Floating Decorative Elements */}
+              <div className="absolute -top-20 -left-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-float"></div>
+              <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+
+              <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 mb-10 backdrop-blur-xl animate-float">
                 <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
                 <span className="text-white text-[10px] font-black tracking-[0.4em] uppercase">Premium Electronics Sri Lanka</span>
               </div>
               
-              <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black leading-[0.85] mb-12 tracking-tighter uppercase italic">
+              <h1 className="text-6xl md:text-8xl lg:text-[11rem] font-black leading-[0.8] mb-12 tracking-tighter uppercase italic animate-text-glow">
                 ELITE <br/> 
-                <span className="text-primary not-italic bg-clip-text text-transparent bg-gradient-to-r from-primary via-red-500 to-primary animate-gradient-x">
+                <span className="text-primary not-italic bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#ff6b6b] to-primary animate-gradient-x">
                   ELECTRONICS
                 </span>
               </h1>
               
               <p className="text-text-dim text-lg md:text-2xl mb-14 max-w-3xl mx-auto leading-relaxed font-bold tracking-tight">
-                {settings.hero_tagline || 'Redefining mathematical precision. Sri Lanka\'s premier destination for authentic electronic instruments and elite precision tools.'}
+                {settings.hero_tagline || 'Experience the future of precision. Sri Lanka\'s most exclusive destination for high-performance instruments and premium electronics.'}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
@@ -130,33 +142,6 @@ export default function HomePage() {
                   SUPPORT CENTER
                 </Link>
               </div>
-
-              <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-12 text-[10px] text-white/40 font-black tracking-[0.3em] uppercase">
-                <div className="flex flex-col items-center gap-4 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:text-primary transition-colors border border-white/5">
-                    <ShieldCheck size={24}/>
-                  </div>
-                  100% Genuine
-                </div>
-                <div className="flex flex-col items-center gap-4 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:text-primary transition-colors border border-white/5">
-                    <Truck size={24}/>
-                  </div>
-                  Island-wide Ship
-                </div>
-                <div className="flex flex-col items-center gap-4 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:text-primary transition-colors border border-white/5">
-                    <Zap size={24}/>
-                  </div>
-                  Fast Support
-                </div>
-                <div className="flex flex-col items-center gap-4 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:text-primary transition-colors border border-white/5">
-                    <Star size={24}/>
-                  </div>
-                  Elite Warranty
-                </div>
-              </div>
             </motion.div>
           </div>
         </div>
@@ -164,33 +149,42 @@ export default function HomePage() {
         {/* Cinematic Scroll Indicator */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
           <div className="w-[1px] h-20 bg-gradient-to-b from-transparent via-white to-transparent animate-pulse"></div>
-          <span className="text-[10px] font-black tracking-[0.5em] uppercase">Scroll</span>
+          <span className="text-[10px] font-black tracking-[0.5em] uppercase text-white">Scroll</span>
         </div>
       </section>
 
-      {/* Supreme Advantages */}
-      <section className="py-20 relative z-10 border-y border-white/5 bg-white/[0.02]">
+      {/* Supreme Advantages - Redesigned for Unforgettable UI */}
+      <section className="py-40 relative z-10">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {[
-              { icon: ShieldCheck, title: "100% Genuine", desc: "Every product is verified authentic from the manufacturer." },
-              { icon: Zap, title: "Direct Support", desc: "Expert technical assistance via WhatsApp and Phone." },
-              { icon: Truck, title: "Island-wide", desc: "Fast and secure delivery to every corner of Sri Lanka." },
-              { icon: Star, title: "Elite Warranty", desc: "Peace of mind with our comprehensive local warranty." }
+              { icon: ShieldCheck, title: "100% Genuine", desc: "Authenticity verified directly from the source. Precision guaranteed for elite professionals.", delay: 0 },
+              { icon: Zap, title: "Direct Support", desc: "Priority technical assistance via our dedicated WhatsApp lines. We never sleep.", delay: 0.1 },
+              { icon: Truck, title: "Island-wide", desc: "Ultra-fast delivery to every corner of Sri Lanka. Precision tools at your doorstep.", delay: 0.2 },
+              { icon: Star, title: "Elite Warranty", desc: "Comprehensive local warranty and supreme post-purchase care for every instrument.", delay: 0.3 }
             ].map((feature, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex flex-col items-center text-center group"
+                whileHover={{ y: -20, scale: 1.02 }}
+                transition={{ duration: 0.6, delay: feature.delay }}
+                className="neon-card group relative overflow-hidden"
               >
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-lg shadow-primary/5">
-                  <feature.icon size={32} />
+                {/* Decorative Background Glow */}
+                <div className="absolute -right-10 -top-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700"></div>
+                
+                <div className="relative z-10">
+                  <div className="w-20 h-20 rounded-[2rem] bg-white/5 border border-white/10 flex items-center justify-center text-primary mb-10 group-hover:bg-primary group-hover:text-white group-hover:rotate-[10deg] transition-all duration-700 shadow-2xl">
+                    <feature.icon size={36} strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-2xl font-black text-white mb-5 uppercase tracking-tighter italic">{feature.title}</h3>
+                  <p className="text-text-dim text-base font-bold leading-relaxed tracking-tight group-hover:text-white/80 transition-colors">{feature.desc}</p>
                 </div>
-                <h3 className="text-lg font-black text-white mb-3 uppercase tracking-widest">{feature.title}</h3>
-                <p className="text-text-dim text-sm font-medium leading-relaxed">{feature.desc}</p>
+                
+                {/* Bottom Accent Line */}
+                <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-primary to-transparent group-hover:w-full transition-all duration-700"></div>
               </motion.div>
             ))}
           </div>
